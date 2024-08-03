@@ -1,0 +1,81 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@using MyOpinion.Domain.Entities
+@using MyOpinion.Service;
+@inject IHttpContextAccessor HttpContextAccessor
+@model ArticlesModel
+@{
+    TextField textField = ViewBag.TextField;
+
+    ViewBag.Title = textField.MetaTitle;
+    ViewBag.Description = textField.MetaDescription;
+    ViewBag.Keywords = textField.MetaKeywords;
+    var Articles = Model.articles;
+    var userAuthor = MySessionExtensions.Get<IdentityUser>(HttpContextAccessor.HttpContext.Session, KeysInTempData.User);
+    var Subjects0 = MySessionExtensions.Get<IEnumerable<Subject>>(HttpContextAccessor.HttpContext.Session, KeysInTempData.Subjects);
+    var Subjects = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(Subjects0, "Id", "Name");
+}
+<div>
+    <h2>
+        Статьи автора - @userAuthor.UserName
+    </h2>
+</div>
+<form asp-area="" asp-controller="Articles" asp-action="ShowAuthorsArticles" method="post">
+
+    <div>
+        <label>
+
+
+        </label>
+    </div>
+
+<div>
+    <label>
+
+        <section id="search" class="alt">
+         
+                <input asp-for="text" placeholder="Поиск" />
+                <div class="div-box">
+                    <label asp-for="Subject"></label>
+                    <select asp-for="Subject" asp-items="Subjects">
+                        <option selected="selected" value="@null">Выберите предмет</option>
+                    </select>
+                    <span asp-validation-for="Subject"></span>
+
+                </div>
+                <label>
+
+
+                </label>
+                <input type="submit" value="Найти" ; />
+
+        </section>
+        
+    </label>
+</div>
+    @* <label>
+        @if (User.Identity.IsAuthenticated)
+        {
+            <label><a asp-area="" asp-controller="Articles" asp-action="Edit">Создать статью</a></label>
+            <label><a asp-area="" asp-controller="Articles" asp-action="UsersArticles">Ваши статьи</a></label>
+        }
+    </label> *@
+
+
+<div>
+    @if (Articles.Any())
+    {
+        <ul class="big-image-list">
+            @foreach (Article entity in Articles)
+            {
+                <li>
+                    <a asp-area="" asp-controller="Articles" asp-action="Show" asp-route-id="@entity.Id">
+                        <img src="~/images/@entity.TitleImagePath" alt="" class="left" />
+                    </a>
+                    <h4>@entity.Title</h4>
+                    <p>@entity.Categories</p>
+                </li>
+            }
+        </ul>
+    }
+</div>
+</form>

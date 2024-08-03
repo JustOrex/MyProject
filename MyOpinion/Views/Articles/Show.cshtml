@@ -1,0 +1,81 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@using MyOpinion.Service;
+@inject IHttpContextAccessor HttpContextAccessor
+@model Article
+@{
+    ViewBag.Title = Model.MetaTitle;
+    ViewBag.Description = Model.MetaDescription;
+    ViewBag.Keywords = Model.MetaKeywords;
+
+    Dictionary<string, string> dic = MySessionExtensions.Get<Dictionary<string, string>>(HttpContextAccessor.HttpContext.Session, KeysInTempData.Dictionary);
+    var userAuthor = MySessionExtensions.Get<IdentityUser>(HttpContextAccessor.HttpContext.Session, KeysInTempData.User);
+    var AuthorsId = Model.AuthorsId.ToString();
+    var Subjects0 = MySessionExtensions.Get<IEnumerable<Subject>>(HttpContextAccessor.HttpContext.Session, KeysInTempData.Subjects);
+
+    if (Model.AdditionalTitleImagesPath != null)
+    {
+        Model.AdditImagPathes = Model.AdditionalTitleImagesPath.Split(" ");
+    }
+    var count = 1;
+}
+
+<div>
+    <h2>
+        @Model.Title
+    </h2>
+    <h2>
+        @Subjects0.FirstOrDefault(x=>x.Id == Model.Subject).Name
+    </h2>
+    <h3>
+        @Model.Categories
+    </h3>
+    <h4>        
+        Автор:<a asp-area="" asp-controller="Articles" asp-action="ShowAuthorsArticles"> @userAuthor.UserName</a>
+    </h4>
+    <div>
+        <img class="img-block" src="~/images/@Model.TitleImagePath"  />
+    </div>
+</div>
+<div>
+    @Html.Raw(Model.Text)
+</div>
+<label>Приложения:</label>
+<div>
+    @foreach(var ImagePath in Model.AdditImagPathes)
+    {
+        if (ImagePath != null && ImagePath != "")
+        {
+            <label> Приложение @count</label>
+            <img class="img-block" src="~/images/@ImagePath" />
+            Addcount();
+        }
+    }
+</div>
+<div>
+    <label>
+        @if (User.Identity.IsAuthenticated)
+        {
+            @if (AuthorsId == dic[KeysInTempData.Id] || User.IsInRole("admin"))
+            {
+              <div>
+                <label><a asp-area="" asp-controller="Articles" asp-action="Edit" asp-route-id="@Model.Id">Редактировать</a></label> 
+                <label>
+                    <form style="display: inline-block;" id="form-@Model.Id" asp-area="" asp-controller="Articles" asp-action="Delete" method="post">
+                        <input type="hidden" name="id" value="@Model.Id">
+                        <a href="#" onclick="document.getElementById('form-@Model.Id').submit();">удалить</a>
+                    </form>
+                </label>
+              </div>
+            }
+        }
+    </label>
+</div>
+<script>
+    @{
+        void Addcount()
+        {
+            count++;
+        }
+    }
+
+</script>

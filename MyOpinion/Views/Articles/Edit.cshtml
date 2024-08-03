@@ -1,0 +1,149 @@
+﻿@using MyOpinion.Service;
+@inject IHttpContextAccessor HttpContextAccessor
+@model Article
+@{
+    string strTitle = "Редактировать запись";
+    ViewBag.Title = strTitle;
+
+    var Subjects0 = MySessionExtensions.Get<IEnumerable<Subject>>(HttpContextAccessor.HttpContext.Session, KeysInTempData.Subjects);
+    var Subjects = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(Subjects0,"Id", "Name");
+
+    
+    MySessionExtensions.Set(HttpContextAccessor.HttpContext.Session, KeysInTempData.ArticleID, Model.Id);
+    int count = 1;
+    int countForfile = 0;
+}
+
+<script src="~/js/ckeditor5-build-classic/ckeditor.js"></script>
+
+
+
+<div>
+    <h2>@strTitle</h2>
+    <div>
+        <form asp-area="" asp-controller="Articles" asp-action="Edit" method="post" enctype="multipart/form-data">
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="DateAdded" />
+            <input type="hidden" asp-for="TitleImagePath" />
+            <input type="hidden" asp-for="AdditImagPathes" />
+            <input type="hidden" asp-for="AdditionalTitleImagesPath" />
+            <input type="hidden" asp-for="AuthorsId" />
+            @* <input type="hidden" name="ImgToDel" id="ImgToDel"></input> *@
+            <div asp-validation-summary="All"></div>
+            <div class="div-box">
+                <label asp-for="Title"></label>
+                <input asp-for="Title" />
+                <span asp-validation-for="Title"></span>
+            </div>
+            <div class="div-box">
+                <label asp-for="Subject"></label>
+                <select asp-for="Subject" asp-items="Subjects">
+                    <option selected ="selected" disabled="disabled">Выберите предмет</option>
+                </select>
+                <span asp-validation-for="Subject"></span>
+            </div>
+            <div class="div-box">
+                <label asp-for="Categories"></label>
+                <input asp-for="Categories" />
+                <span asp-validation-for="Categories"></span>
+            </div>
+            <div class="div-box">
+                <label asp-for="Text"></label>
+                @* <div id="toolbar-container"></div> *@
+                <textarea asp-for="Text"></textarea>
+                @* <div id="Text"></div> *@
+                <span asp-validation-for="Text"></span>
+            </div>
+           
+            <div class="div-box">
+                <label asp-for="TitleImagePath"></label>
+                
+                    <input type="file" name="titleImageFile" id="titleImageFile" />
+                    <div>
+                        <img class="img-block" src="~/images/@Model.TitleImagePath" />
+                    </div>
+                
+            </div>
+            <label>Приложения:</label>
+            @foreach(var i in Model.AdditImagPathes){
+                
+                    <div class="div-box">
+                    <label> Приложение @count</label>
+
+                    <input type="file" name="additImagPathes" id="@i" />
+                    
+                <div>
+                        <img class="img-block" src="~/images/@Model.AdditImagPathes[countForfile]" />
+                </div>
+                    @if (i != null && i != ""){
+
+                        <input type="hidden" name="ImgToDel" id="ImgToDel" value="@Model.AdditImagPathes[countForfile]" />
+                        <button>Удалить</button>
+                    }
+                  
+                </div>
+              AddCount();
+            }
+            
+            <input type="submit" value="Сохранить" />
+        </form>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    var f = document.querySelectorAll('input[type=file]');
+    var clearInput = function () { this.value = '' };
+    for (var i = 0; i < f.length; i++)
+        f[i].addEventListener('click', clearInput);
+    
+</script>
+
+<script>
+    
+    // ClassicEditor
+    //     .create(document.querySelector('#Html.IdFor(x=>x.Text)')), {
+    //     ckfinder: {
+    //         uploadUrl: '/ckfinder/connector?command=QuickUpload&type=Files&responseType=json'
+    //     },
+    //     .catch(error => {
+    //         console.error(error);
+    //     });
+    
+    @{
+        void AddCount()
+        {
+            count++;
+            countForfile++;
+        }
+        void DeletePath(string i)
+        {
+            
+        }
+    }
+     
+        
+        
+        ClassicEditor
+        .create(document.querySelector('#@Html.IdFor(x=>x.Text)'), {
+            ckfinder: {
+                uploadUrl:'/ckfinder/core/connector/aspx?command=QuickUpload&type=Files&responseType=json' /* '/ckfinder/connector?command=QuickUpload&type=Files&responseType=json' */
+            },
+        })
+            .catch(function (error) {
+                console.error(error);
+            });
+    
+
+    // DecoupledEditor
+    //     // .create(document.querySelector('#Html.IdFor(x=>x.Text)'))
+    //     .create(document.querySelector('#Text'))
+    //     .then(editor => {
+    //         const toolbarContainer = document.querySelector('#toolbar-container');
+
+    //         toolbarContainer.appendChild(editor.ui.view.toolbar.element);
+    //     })
+    //     .catch(error => {
+    //         console.error(error);
+    //     });
+</script>

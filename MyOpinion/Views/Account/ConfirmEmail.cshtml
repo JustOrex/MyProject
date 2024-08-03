@@ -1,0 +1,18 @@
+﻿@model ConfirmEmailViewModel
+<div>
+    <h1>Подтверждение почты</h1>
+    <div class="div-box">
+        <form asp-area="" asp-controller="Account" asp-action="ConfirmEmail" method="post" asp-route-returnUrl="@ViewBag.returnUrl">
+            <div asp-validation-summary="All"></div>
+            <div>
+                <label asp-for="Code"></label>
+                <input asp-for="Code" />
+                <span asp-validation-for="Code"></span>
+            </div>
+            
+            <div>
+                <input type="submit" value="Отправить" />
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+This file is used by the publish/package process of your Web project. You can customize the behavior of this process
+by editing this MSBuild file. In order to learn more about this please visit https://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <_PublishTargetUrl>e:\downloads\MyOpinion</_PublishTargetUrl>
+    <History>True|2024-05-13T17:48:09.4261775Z;True|2024-05-13T18:56:09.6154295+03:00;True|2024-05-12T19:18:33.6345453+03:00;True|2024-05-11T21:37:45.5956014+03:00;True|2024-05-10T20:34:38.0745961+03:00;True|2024-05-10T20:33:21.8353299+03:00;True|2024-05-10T19:58:19.4657611+03:00;True|2024-05-10T18:39:14.9702674+03:00;False|2024-05-10T18:38:19.9301856+03:00;</History>
+    <LastFailureDetails />
+  </PropertyGroup>
+</Project>

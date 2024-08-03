@@ -1,0 +1,29 @@
+﻿@using MyOpinion.Service;
+@model ChangeViewModel
+@inject IHttpContextAccessor HttpContextAccessor
+@{
+    var dic = MySessionExtensions.Get<Dictionary<string, string>>(HttpContextAccessor.HttpContext.Session, KeysInTempData.Dictionary);
+    var userName = dic[KeysInTempData.UserName];
+    Model.UserName = userName;
+    HttpContextAccessor.HttpContext.Session.SetString(KeysInTempData.WhatChanging, KeysInTempData.UserName);
+
+}
+<h1>Смена логина</h1>
+<div class="div-box">
+    <form asp-area="" asp-controller="Account" asp-action="EditUserName" method="post" asp-route-returnUrl="@ViewBag.returnUrl">
+        <div asp-validation-summary="All"></div>
+        <div>
+            <label asp-for="UserName"></label>
+            <input asp-for="UserName" />
+            <span asp-validation-for="UserName"></span>
+        </div>
+        <div>
+            <label>
+                
+            </label>
+        </div>
+        <div>
+            <input type="submit" value="Сохранить" ; />
+        </div>
+    </form>
+</div>

@@ -1,0 +1,60 @@
+﻿
+<div id="sidebar">
+	<div class="inner">
+
+		<!-- Search -->
+		@* <section id="search" class="alt">
+			<form method="post" action="#">
+				<input type="text" name="query" id="query" placeholder="Search" />
+			</form>
+		</section> *@
+
+		<!-- Menu -->
+		
+		<nav id="menu">
+			
+			<header class="major">
+				<h2>Меню</h2>
+			</header>
+			<ul>
+				
+				<li><a asp-area="" asp-controller="Home" asp-action="Index">Главная страница</a></li>
+				<li><a asp-area="" asp-controller="Articles" asp-action="AllArticles">Статьи</a></li>
+				@if (User.Identity.IsAuthenticated)
+				{
+					<li><a asp-area="" asp-controller="Account" asp-action="Profile">Профиль</a></li>
+				}
+				else
+				{
+					<li><a asp-area="" asp-controller="Account" asp-action="Login">Войти</a></li>
+				}
+				
+				 
+			</ul>
+		</nav>
+
+		
+		
+
+		<!-- Section -->
+		<section>
+			<header class="major">
+				<h2>Контакты</h2>
+			</header>
+			<p></p>
+			<ul class="contact">
+				<li class="icon solid fa-envelope"><a href="#">@Config.CompanyEmail</a></li>
+				@* <li class="icon solid fa-phone">@Config.CompanyPhone</li> *@
+				<li class="icon solid fa-home">
+					Russian Federation<br />
+					Yaroslavl
+				</li>
+			</ul>
+		</section>
+
+		<!-- Footer -->
+		@await Html.PartialAsync("FooterPartial")
+
+
+	</div>
+</div>

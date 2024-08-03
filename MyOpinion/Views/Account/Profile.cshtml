@@ -1,0 +1,59 @@
+﻿@using MyOpinion.Service;
+@model Microsoft.AspNetCore.Identity.IdentityUser
+@inject IHttpContextAccessor HttpContextAccessor
+@{
+    var dic = MySessionExtensions.Get<Dictionary<string, string>>(HttpContextAccessor.HttpContext.Session, KeysInTempData.Dictionary);
+    string strTitle = "Профиль";
+    ViewBag.Title = strTitle;
+    string name = dic[KeysInTempData.UserName];
+
+    
+
+   
+
+    var password = dic[KeysInTempData.Password];
+
+    foreach(var i in password)
+    {
+        password = password.Replace(i,'*');
+    }
+}
+
+
+<div>
+    <h1>Профиль</h1>
+    <div class="div-box">
+        <form asp-area="" asp-controller="Account" asp-action="Profile" method="get" asp-route-returnUrl="@ViewBag.returnUrl">
+            <h2>Ваши данные</h2>
+
+            <div>
+                <label>
+                    Логин: @name
+                    <a asp-area="" asp-controller="Account" asp-action="EditUserName">Изменить Логин</a>
+                </label>
+            </div>
+            @* <div>
+                <label>
+                    Почта: @email
+                    <a asp-area="" asp-controller="Account" asp-action="SEforPreChanging">Изменить почту</a>
+                </label>
+            </div> *@
+            <div>
+                <label>
+                    Пароль:@password
+                    <a asp-area="" asp-controller="Account" asp-action="EditPassword">Изменить пароль</a>
+                </label>
+            </div>
+            <div>
+                <label>
+                </label>
+            </div>
+            <div>
+                <label>
+                    <a asp-area="" asp-controller="Account" asp-action="Logout">Выйти</a>
+                </label>
+            </div>
+
+        </form>
+    </div>
+</div>
